@@ -14,15 +14,17 @@ import Navbar from './Navbar';
 export const Form = () => {
     
     const NOTES_MAIN_STORE = "MAIN_STORE";
+    const [id, setId] = useState(0)
     const [title, setTitle] = useState('')
     const [desc, setDesc] = useState('')
     const [arr, setArr] = useState([])
 
     let main_data_array = JSON.parse(localStorage.getItem(NOTES_MAIN_STORE) || '[]')
+   
     useEffect(() => {
         if(main_data_array)
           setArr(main_data_array)
-      }, []);
+      },[]);
 
     const handleAdd = () => {
         let id=0;
@@ -35,9 +37,23 @@ export const Form = () => {
         localStorage.setItem(NOTES_MAIN_STORE, JSON.stringify(main_data_array));
     }
 
-    const editData=(title,desc)=>{
+    const handleUpdate=(id)=>{
+        let main_data_array = JSON.parse(localStorage.getItem(NOTES_MAIN_STORE) || '[]');
+        const note= new Note(id,title,desc)
+        const existing = main_data_array.find(t => t.id == id);
+        if (existing) {
+            existing.title = note.title;
+            existing.desc = note.desc;
+            existing._date = new Date().toLocaleString();
+        }
+        setArr(main_data_array)
+        localStorage.setItem(NOTES_MAIN_STORE, JSON.stringify(main_data_array));
+    }
+
+    const editData=(id,title,desc)=>{
         setTitle(title)
         setDesc(desc)
+        setId(id)
     }
     return (
         <div>
@@ -54,7 +70,7 @@ export const Form = () => {
                     <br />
                     <MDBBtn color='success' onClick={handleAdd}>Add</MDBBtn>
                     <MDBBtn className='mx-2' color='danger'>Delete</MDBBtn>
-                    <MDBBtn className='mx-1' color='dark'>Update</MDBBtn>
+                    <MDBBtn className='mx-1' color='dark' onClick={()=>handleUpdate(id)}>Update</MDBBtn>
                     <MDBBtn className='mx-1' color='dark'>Delete All</MDBBtn>
                     <MDBBtn className='mx-1' color='dark' >Restore All</MDBBtn>
                     <MDBBtn className='mx-1' color='dark'>Archive</MDBBtn>

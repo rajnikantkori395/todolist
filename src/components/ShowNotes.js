@@ -20,8 +20,8 @@ export default function ShowNotes(props) {
     localStorage.setItem(NOTES_DELETED_STORE, JSON.stringify(deleted_array));
   }
 
-  const handleEdit=(title,desc)=>{
-    props.edit(title,desc)
+  const handleEdit=(id,title,desc)=>{
+    props.edit(id,title,desc)
   }
 
   return (
@@ -44,7 +44,7 @@ export default function ShowNotes(props) {
             <td>{element._date}</td>
             <td>
               <MDBBtn className='mx-2' color='danger' onClick={() => handleDelete(element.id)}>Delete</MDBBtn>
-              <MDBBtn className='mx-1' color='dark' onClick={()=>handleEdit(element.title,element.desc)}>Edit</MDBBtn>
+              <MDBBtn className='mx-1' color='dark' onClick={()=>handleEdit(element.id,element.title,element.desc)}>Edit</MDBBtn>
             </td>
           </tr>)
         })}
